@@ -1,3 +1,3 @@
-package scala.megasena.backtest.model
+package megasena.backtest.model
 
 case class Concurso ()

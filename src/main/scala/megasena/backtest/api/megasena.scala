@@ -1,4 +1,4 @@
-package scala.megasena.backtest.api
+package megasena.backtest.api
 
 object megasena {
 
