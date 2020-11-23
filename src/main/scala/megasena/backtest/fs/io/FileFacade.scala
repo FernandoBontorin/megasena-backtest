@@ -2,7 +2,7 @@ package megasena.backtest.fs.io
 
 import java.io.FileOutputStream
 
-import megasena.backtest.collections.collection
+import megasena.backtest.collections
 
 import scala.reflect.io.File
 
@@ -11,12 +11,8 @@ class FileFacade(val where: String) {
 
   def scalaFile = new File(javaFile)
 
-  def path: String = {
-    collection.removeLastElement(filename.split("/")).mkString("/")
-  }
-
   def name: String = {
-    filterExtension(collection.lastElementOf(filename.split("/")))
+    filterExtension(collections.lastElementOf(filename.split("/")))
   }
 
   private def filterExtension(s: String): String = {
@@ -30,14 +26,18 @@ class FileFacade(val where: String) {
     if (end.contains(".")) end.split("[.]").reverse.head else ""
   }
 
-  def filename: String = where.replace("\\", "/")
-
   def out: FileOutputStream = {
     new java.io.File(path).mkdirs
     new FileOutputStream(javaFile)
   }
 
+  def path: String = {
+    collections.removeLastElement(filename.split("/")).mkString("/")
+  }
+
   def javaFile = new java.io.File(filename)
+
+  def filename: String = where.replace("\\", "/")
 
 
 }

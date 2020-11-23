@@ -1,6 +1,6 @@
-package megasena.backtest.collections
+package megasena.backtest
 
-object collection {
+package object collections {
   def lastElementOf[T](array: Array[T]): T = {
     array.reverse.head
   }

@@ -23,15 +23,15 @@ case class CompressedFile(file: File) {
     mapReduce[Stream[ZipEntry], Stream[Iterator[String]]](_.filter(p), _.map(entry => Source.fromInputStream(zis).getLines))(zis)
   }
 
-  def find(p: ZipPred) = {
-    val zis = zipInputStream
-    mapReduce[Option[ZipEntry], Option[Iterator[String]]](_.find(p), _.map(entry => Source.fromInputStream(zis).getLines))(zis)
-  }
-
   def zipInputStream = new ZipInputStream(new FileInputStream(file))
 
   private def mapReduce[T, E](map: Stream[ZipEntry] => T, reduce: T => E)(zis: ZipInputStream) = reduce(map(iterate(zis)))
 
   private def iterate(zis: ZipInputStream): Stream[ZipEntry] = Stream.continually(zis.getNextEntry).takeWhile(_ != null)
+
+  def find(p: ZipPred) = {
+    val zis = zipInputStream
+    mapReduce[Option[ZipEntry], Option[Iterator[String]]](_.find(p), _.map(entry => Source.fromInputStream(zis).getLines))(zis)
+  }
 
 }

@@ -5,8 +5,7 @@ import org.apache.http.client.methods.{HttpGet, HttpPost, HttpRequestBase}
 import org.apache.http.impl.client.AutoRetryHttpClient
 
 package object http {
-  private val client = new AutoRetryHttpClient()
-  private var method: HttpRequestBase = null
+  private var method: HttpRequestBase = _
 
   def get(url: String) = {
     method = new HttpGet(url)
@@ -19,7 +18,7 @@ package object http {
   }
 
   def save(filename: String): Unit = {
-    client.execute(method).getEntity.writeTo(new FileFacade(filename).out)
+    new AutoRetryHttpClient().execute(method).getEntity.writeTo(new FileFacade(filename).out)
   }
 
 }

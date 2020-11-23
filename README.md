@@ -7,7 +7,7 @@ Todo
 ## RoadMap
 - [x] Download the latest zip file that contains all megasena lottery runs
 - [x] Unzip megasena file
-- [ ] Clean up htm data
+- [ ] Clean up htm data (WORK IN PROGRESS) 
 - [ ] Read htm as Spark Dataframe
 - [ ] Create api to integrate against anyone strategy
 - [ ] Introduction documentation
