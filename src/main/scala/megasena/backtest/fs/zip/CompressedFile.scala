@@ -8,11 +8,11 @@ import scala.io.Source
 case class CompressedFile(file: File) {
 
   type ZipPred = ZipEntry => Boolean
-  val name = file.getName
+  val name: String = file.getName
 
   def this(name: String) = this(new File(name))
 
-  def unzipAtSource(name: String) = unzipAs(new File(file.getParentFile, name).getAbsolutePath)
+  def unzipAtSource(name: String): File = unzipAs(new File(file.getParentFile, name).getAbsolutePath)
 
   def unzipAs(name: String): File = ZipReader.uncompress(name, file)
 
@@ -20,7 +20,7 @@ case class CompressedFile(file: File) {
 
   def filter(p: ZipPred) = {
     val zis = zipInputStream
-    mapReduce[Stream[ZipEntry], Stream[Iterator[String]]](_.filter(p), _.map(entry => Source.fromInputStream(zis).getLines))(zis)
+    mapReduce[Stream[ZipEntry], Stream[Iterator[String]]](_.filter(p), _.map(_ => Source.fromInputStream(zis).getLines))(zis)
   }
 
   def zipInputStream = new ZipInputStream(new FileInputStream(file))
@@ -29,7 +29,7 @@ case class CompressedFile(file: File) {
 
   private def iterate(zis: ZipInputStream): Stream[ZipEntry] = Stream.continually(zis.getNextEntry).takeWhile(_ != null)
 
-  def find(p: ZipPred) = {
+  def find(p: ZipPred): Option[Iterator[String]] = {
     val zis = zipInputStream
     mapReduce[Option[ZipEntry], Option[Iterator[String]]](_.find(p), _.map(entry => Source.fromInputStream(zis).getLines))(zis)
   }

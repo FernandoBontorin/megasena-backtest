@@ -15,7 +15,7 @@ abstract class ZipArchive {
 
   def size: Int
 
-  def zipAtSource(name: String) = this match {
+  def zipAtSource(name: String): File = this match {
     case EmptyZip => throw new Exception("Nothing to Zip")
     case NonEmptyZip(head, _) => zipAs(new File(head.getParentFile, name).getAbsolutePath)
   }

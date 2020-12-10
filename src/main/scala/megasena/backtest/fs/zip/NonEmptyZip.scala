@@ -5,9 +5,9 @@ import java.io.File
 case class NonEmptyZip(head: File, tail: ZipArchive) extends ZipArchive {
   def isEmpty = false
 
-  def size = 1 + tail.size
+  def size: Int = 1 + tail.size
 
-  def incl(file: File): ZipArchive = new NonEmptyZip(head, tail incl file)
+  def incl(file: File): ZipArchive = NonEmptyZip(head, tail incl file)
 
-  override def toString = head.getName + ", " + tail.toString
+  override def toString: String = head.getName + ", " + tail.toString
 }
